@@ -3,31 +3,6 @@ import {React, useState} from 'react';
 import { v4 as uuid } from 'uuid';
 import './App.css';
 
-
-const data = [
-  {
-    id: uuid(),
-    completed: false,
-    content: "Sortir le chien",
-    date: Date.now()
-  }, {
-    id: uuid(),
-    completed: false,
-    content: "Faire les courses",
-    date: Date.now()
-  }, {
-    id: uuid(),
-    completed: false,
-    content: "Préparer à manger",
-    date: Date.now()
-  }, {
-    id: uuid(),
-    completed: true,
-    content: "Acheter des fleurs à ma femme",
-    date: Date.now()
-  },
-];
-
 function TaskPreview({ task }) {
   return (
     <article>
@@ -36,16 +11,16 @@ function TaskPreview({ task }) {
   );
 }
 
-function TasksMaster({ data }) {
+function TasksMaster() {
 
-  const [tasks,setTasks] = useState(data);
+  const [tasks,setTasks] = useState([]);
   
   async function add_task(){
 
     const content_from_prompt = await prompt("Add a new task");
 
     const newTask = {id:uuid(),completed:false, content:content_from_prompt, date: Date.now()};
-    setTasks([...tasks,newTask]);
+    setTasks([tasks,newTask]);
   }
 
   return (
@@ -59,7 +34,7 @@ function TasksMaster({ data }) {
 function App() {
   return (
     <div className="App">
-      <TasksMaster data={data} />
+      <TasksMaster />
     </div>
   );
 }
