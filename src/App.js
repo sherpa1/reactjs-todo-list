@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import { useForm } from "react-hook-form";
 
+import { Route, Routes, Link} from "react-router-dom";
 
 import { v4 as uuid } from 'uuid';
 import './App.css';
@@ -11,6 +12,22 @@ function TaskPreview({ task }) {
     <article>
       <p>{task.content}</p>
     </article>
+  );
+}
+
+function AddTask() {
+
+  const [tasks, setTasks] = useState([]);
+
+  function onAddTask(content) {
+
+    const newTask = { id: uuid(), completed: false, content: content, date: Date.now() };
+
+    setTasks([tasks, newTask]);
+  }
+
+  return (
+    <TaskForm onAddTask={onAddTask} />
   );
 }
 
@@ -26,27 +43,19 @@ function TasksMaster() {
     setTasks([tasks, newTask]);
   }
 
-  function onAddTask(content){
-
-    const newTask = { id: uuid(), completed: false, content: content, date: Date.now() };
-
-    setTasks([tasks, newTask]);
-  }
-
   return (
     <div>
       <button onClick={() => add_task()}>Add a new task</button>
-      <TaskForm onAddTask={onAddTask} />
       {tasks.map(task => <TaskPreview key={task.id} task={task} />)}
     </div>
   );
 }
 
-function TaskForm({onAddTask}) {
+function TaskForm({ onAddTask }) {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  function on_submit(data){
-    const {content} = data;
+  function on_submit(data) {
+    const { content } = data;
 
     onAddTask(content);
 
@@ -68,7 +77,23 @@ function TaskForm({onAddTask}) {
 function App() {
   return (
     <div className="App">
-      <TasksMaster />
+      <nav>
+        <ul>
+          <li>
+            <Link to="/tasks">Tasks</Link>
+          </li>
+          <li>
+            <Link to="/tasks/add">Add</Link>
+          </li>
+        </ul>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<TasksMaster />} />
+        <Route path="/tasks" element={<TasksMaster />} />
+        <Route path="/tasks/add" element={<AddTask />} />
+      </Routes>
+
     </div>
   );
 }
