@@ -8,22 +8,22 @@ const data = [
     id: uuid(),
     completed: false,
     content: "Sortir le chien",
-    date: "2022-05-15"
+    date: new Date()
   }, {
     id: uuid(),
     completed: false,
     content: "Faire les courses",
-    date: "2022-05-19"
+    date: new Date()
   }, {
     id: uuid(),
     completed: false,
     content: "Préparer à manger",
-    date: "2022-05-18"
+    date: new Date()
   }, {
     id: uuid(),
     completed: true,
     content: "Acheter des fleurs à ma femme",
-    date: "2022-05-19"
+    date: new Date()
   },
 ];
 
@@ -40,9 +40,11 @@ function TasksMaster({ data }) {
   const [tasks,setTasks] = useState(data);
 
   
-  function add_task(){
+  async function add_task(){
 
-    const newTask = {id:uuid(),completed:false, content:"Test", date:"2022-05-19"};
+    const content_from_prompt = await prompt("Add a new task");
+
+    const newTask = {id:uuid(),completed:false, content_from_prompt:content, date: new Date()};
     setTasks([...tasks,newTask]);
   }
 
