@@ -1,0 +1,15 @@
+header{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+header nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+header nav a.button{
+    margin:1em;
+}
