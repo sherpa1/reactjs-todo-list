@@ -27,7 +27,12 @@ function AddTask() {
   }
 
   return (
+    <div>
+    <ul>
+      {tasks.map(task=><li>{task.content}</li>)}
+    </ul>
     <TaskForm onAddTask={onAddTask} />
+    </div>
   );
 }
 
