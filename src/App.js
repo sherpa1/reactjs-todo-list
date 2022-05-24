@@ -45,21 +45,10 @@ function AddTask() {
 
 function TasksMaster() {
 
-  //const [tasks, setTasks] = useState([]);
-
-  // async function add_task() {
-
-  //   const content_from_prompt = await prompt("Add a new task");
-
-  //   const newTask = { id: uuid(), completed: false, content: content_from_prompt, date: Date.now() };
-  //   setTasks([...tasks, newTask]);
-  // }
-
   return (
     <TasksContext.Consumer>
       {({ tasks }) => (
         <div>
-          {/* <button onClick={() => add_task()}>Add a new task</button> */}
           {tasks.map(task => <TaskPreview key={task.id} task={task} />)}
         </div>
       )}
