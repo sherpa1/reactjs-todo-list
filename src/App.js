@@ -1,4 +1,4 @@
-import { React, useState, useContext, createContext } from 'react';
+import { React, useState, useContext, createContext, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 
 import { Route, Routes, Link } from "react-router-dom";
@@ -88,8 +88,13 @@ function TaskForm({ onAddTask }) {
 }
 
 function App() {
-
   const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+
+    setTasks([{ id: uuid(), completed: false, content: "Faire les courses", date: new Date() }
+    ]);
+  }, []);
 
   return (
     <TasksContext.Provider value={{ tasks, setTasks }}>
