@@ -23,7 +23,7 @@ function AddTask() {
 
     const newTask = { id: uuid(), completed: false, content: content, date: Date.now() };
 
-    setTasks([tasks, newTask]);
+    setTasks([...tasks, newTask]);
   }
 
   return (
@@ -40,7 +40,7 @@ function TasksMaster() {
     const content_from_prompt = await prompt("Add a new task");
 
     const newTask = { id: uuid(), completed: false, content: content_from_prompt, date: Date.now() };
-    setTasks([tasks, newTask]);
+    setTasks([...tasks, newTask]);
   }
 
   return (
