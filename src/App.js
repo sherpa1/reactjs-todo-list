@@ -21,7 +21,7 @@ function TaskPreview({ task }) {
 
 function AddTask() {
 
-  const [tasks, setTasks] = useState([]);
+  const { tasks, setTasks } = useContext(TasksContext);
 
   function onAddTask(content) {
 
@@ -31,12 +31,15 @@ function AddTask() {
   }
 
   return (
-    <div>
-      <ul>
-        {tasks.map(task => <li>{task.content}</li>)}
-      </ul>
-      <TaskForm onAddTask={onAddTask} />
-    </div>
+    <TasksContext.Provider value={{ tasks, setTasks }}>
+      <div>
+        <ul>
+          {tasks.map(task => <li>{task.content}</li>)}
+        </ul>
+        <TaskForm onAddTask={onAddTask} />
+      </div>
+    </TasksContext.Provider>
+
   );
 }
 
