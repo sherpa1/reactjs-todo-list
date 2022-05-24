@@ -1,11 +1,15 @@
 import { React, useState, useContext, createContext } from 'react';
 import { useForm } from "react-hook-form";
 
-import { Route, Routes, Link} from "react-router-dom";
+import { Route, Routes, Link } from "react-router-dom";
 
 import { v4 as uuid } from 'uuid';
 import './App.css';
 import './Form.css';
+
+const TasksContext = createContext(
+  { tasks: [], setTasks: {} }
+);
 
 function TaskPreview({ task }) {
   return (
@@ -28,31 +32,35 @@ function AddTask() {
 
   return (
     <div>
-    <ul>
-      {tasks.map(task=><li>{task.content}</li>)}
-    </ul>
-    <TaskForm onAddTask={onAddTask} />
+      <ul>
+        {tasks.map(task => <li>{task.content}</li>)}
+      </ul>
+      <TaskForm onAddTask={onAddTask} />
     </div>
   );
 }
 
 function TasksMaster() {
 
-  const [tasks, setTasks] = useState([]);
+  //const [tasks, setTasks] = useState([]);
 
-  async function add_task() {
+  // async function add_task() {
 
-    const content_from_prompt = await prompt("Add a new task");
+  //   const content_from_prompt = await prompt("Add a new task");
 
-    const newTask = { id: uuid(), completed: false, content: content_from_prompt, date: Date.now() };
-    setTasks([...tasks, newTask]);
-  }
+  //   const newTask = { id: uuid(), completed: false, content: content_from_prompt, date: Date.now() };
+  //   setTasks([...tasks, newTask]);
+  // }
 
   return (
-    <div>
-      <button onClick={() => add_task()}>Add a new task</button>
-      {tasks.map(task => <TaskPreview key={task.id} task={task} />)}
-    </div>
+    <TasksContext.Consumer>
+      {({ tasks }) => (
+        <div>
+          {/* <button onClick={() => add_task()}>Add a new task</button> */}
+          {tasks.map(task => <TaskPreview key={task.id} task={task} />)}
+        </div>
+      )}
+    </TasksContext.Consumer>
   );
 }
 
@@ -80,26 +88,31 @@ function TaskForm({ onAddTask }) {
 }
 
 function App() {
+
+  const [tasks, setTasks] = useState([]);
+
   return (
-    <div className="App">
-      <nav>
-        <ul>
-          <li>
-            <Link to="/tasks">Tasks</Link>
-          </li>
-          <li>
-            <Link to="/tasks/add">Add</Link>
-          </li>
-        </ul>
-      </nav>
+    <TasksContext.Provider value={{ tasks, setTasks }}>
+      <div className="App">
+        <nav>
+          <ul>
+            <li>
+              <Link to="/tasks">Tasks</Link>
+            </li>
+            <li>
+              <Link to="/tasks/add">Add</Link>
+            </li>
+          </ul>
+        </nav>
 
-      <Routes>
-        <Route path="/" element={<TasksMaster />} />
-        <Route path="/tasks" element={<TasksMaster />} />
-        <Route path="/tasks/add" element={<AddTask />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<TasksMaster />} />
+          <Route path="/tasks" element={<TasksMaster />} />
+          <Route path="/tasks/add" element={<AddTask />} />
+        </Routes>
 
-    </div>
+      </div>
+    </TasksContext.Provider>
   );
 }
 
